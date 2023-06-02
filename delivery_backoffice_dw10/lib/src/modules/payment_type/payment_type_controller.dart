@@ -26,6 +26,8 @@ abstract class PaymentTypeControllerBase with Store {
   var _paymentTypes = <PaymentTypeModel>[];
   @readonly
   String? _errorMessage;
+  @readonly
+  bool? _filterEnabled;
 
   @readonly
   PaymentTypeModel? _paymentTypeSelected;
@@ -33,10 +35,13 @@ abstract class PaymentTypeControllerBase with Store {
   PaymentTypeControllerBase(this._paymentTypeRepository);
 
   @action
+  void changeFilter(bool? enabled) => _filterEnabled = enabled;
+
+  @action
   Future<void> loadPayments() async {
     try {
       _status = PaymentTypeStateStatus.loading;
-      _paymentTypes = await _paymentTypeRepository.findAll(null);
+      _paymentTypes = await _paymentTypeRepository.findAll(_filterEnabled);
       _status = PaymentTypeStateStatus.loaded;
     } catch (e, s) {
       log('Erro ao carregar formas de pagamento', error: e, stackTrace: s);

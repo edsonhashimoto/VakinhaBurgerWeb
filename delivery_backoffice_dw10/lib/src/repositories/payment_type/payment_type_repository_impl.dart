@@ -19,7 +19,7 @@ class PaymentTypeRepositoryImpl implements PaymentTypeRepository {
       final paymentResult = await _dio.auth().get(
         '/payment-types',
         queryParameters: {
-          if (enabled != null) 'enabled': debugProfileBuildsEnabled,
+          if (enabled != null) 'enabled': enabled,
         },
       );
       return paymentResult.data
